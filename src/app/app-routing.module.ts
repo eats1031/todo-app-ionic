@@ -14,6 +14,10 @@ const routes: Routes = [
   {
     path: 'category-manager',
     loadChildren: () => import('./pages/category-manager/category-manager.module').then(m => m.CategoryManagerPageModule)
+  },
+  {
+    path: 'task-form',
+    loadChildren: () => import('./pages/task-form/task-form.module').then( m => m.TaskFormPageModule)
   }
 ];
 

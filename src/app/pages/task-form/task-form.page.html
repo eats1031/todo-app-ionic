@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="cancel()">Cancelar</ion-button>
+    </ion-buttons>
+    <ion-title>Nueva tarea</ion-title>
+    <ion-buttons slot="end">
+      <ion-button [disabled]="!title.trim()" (click)="save()" strong="true">
+        Guardar
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-item lines="full">
+    <ion-input
+      label="Tarea"
+      labelPlacement="stacked"
+      placeholder="¿Qué necesitas hacer?"
+      [(ngModel)]="title"
+      autofocus="true">
+    </ion-input>
+  </ion-item>
+
+  <h3 class="section-title">Categoría</h3>
+
+  <div class="category-grid">
+    <div
+      class="category-chip"
+      [class.selected]="selectedCategoryId === null"
+      (click)="selectCategory(null)">
+      <div class="dot" style="background: #92949c"></div>
+      <span>Sin categoría</span>
+    </div>
+
+    <div
+      *ngFor="let cat of categories"
+      class="category-chip"
+      [class.selected]="selectedCategoryId === cat.id"
+      (click)="selectCategory(cat.id)">
+      <div class="dot" [style.background]="cat.color"></div>
+      <span>{{ cat.name }}</span>
+    </div>
+  </div>
+
+  <p *ngIf="categories.length === 0" class="hint">
+    No tienes categorías aún. Puedes crearlas desde el ícono de etiquetas en la pantalla principal.
+  </p>
+</ion-content>
