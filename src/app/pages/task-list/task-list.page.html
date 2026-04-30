@@ -30,13 +30,13 @@
     <ion-segment-button value="">
       <ion-label>Todas</ion-label>
     </ion-segment-button>
-    <ion-segment-button *ngFor="let cat of categories" [value]="cat.id">
+    <ion-segment-button *ngFor="let cat of categories; trackBy: trackByCategoryId" [value]="cat.id">
       <ion-label>{{ cat.name }}</ion-label>
     </ion-segment-button>
   </ion-segment>
 
   <ion-list>
-    <ion-item *ngFor="let task of tasks" [class.completed]="task.completed">
+    <ion-item *ngFor="let task of tasks; trackBy: trackByTaskId" [class.completed]="task.completed">
       <ion-checkbox
         slot="start"
         [checked]="task.completed"
