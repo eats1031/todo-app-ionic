@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule, ModalController } from '@ionic/angular';
@@ -15,7 +15,8 @@ import { TaskFormPage } from '../task-form/task-form.page';
   templateUrl: './task-list.page.html',
   styleUrls: ['./task-list.page.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, IonicModule, RouterModule]
+  imports: [CommonModule, FormsModule, IonicModule, RouterModule],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaskListPage implements OnInit {
   tasks: Task[] = [];
@@ -27,7 +28,8 @@ export class TaskListPage implements OnInit {
     private taskService: TaskService,
     private categoryService: CategoryService,
     private featureFlagService: FeatureFlagService,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private cdr: ChangeDetectorRef
   ) {}
 
   async ngOnInit() {
@@ -43,11 +45,13 @@ export class TaskListPage implements OnInit {
   loadData() {
     this.categories = this.categoryService.getCategories();
     this.tasks = this.taskService.getByCategory(this.selectedCategoryId);
+    this.cdr.markForCheck();
   }
 
   filterByCategory(categoryId: string | null) {
     this.selectedCategoryId = categoryId;
     this.tasks = this.taskService.getByCategory(categoryId);
+    this.cdr.markForCheck();
   }
 
   async addTask() {
@@ -83,6 +87,15 @@ export class TaskListPage implements OnInit {
     if (!categoryId) return '#92949c';
     const cat = this.categories.find(c => c.id === categoryId);
     return cat ? cat.color : '#92949c';
+  }
+
+  // trackBy functions — optimizan el re-render de listas largas
+  trackByTaskId(index: number, task: Task): string {
+    return task.id;
+  }
+
+  trackByCategoryId(index: number, category: Category): string {
+    return category.id;
   }
 
   // Estadísticas — solo se renderizan si el feature flag está activo
