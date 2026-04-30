@@ -1,13 +1,59 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>task-list</ion-title>
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Mis Tareas</ion-title>
+    <ion-buttons slot="end">
+      <ion-button routerLink="/category-manager">
+        <ion-icon slot="icon-only" name="pricetags-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">task-list</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+  <!-- Filtro por categoría -->
+  <ion-segment (ionChange)="filterByCategory($any($event).detail.value)" value="">
+    <ion-segment-button value="">
+      <ion-label>Todas</ion-label>
+    </ion-segment-button>
+    <ion-segment-button *ngFor="let cat of categories" [value]="cat.id">
+      <ion-label>{{ cat.name }}</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <!-- Lista de tareas -->
+  <ion-list>
+    <ion-item *ngFor="let task of tasks" [class.completed]="task.completed">
+      <ion-checkbox
+        slot="start"
+        [checked]="task.completed"
+        (ionChange)="toggleComplete(task)">
+      </ion-checkbox>
+
+      <ion-label>
+        <h2>{{ task.title }}</h2>
+        <p *ngIf="task.categoryId">
+          <ion-badge [style.background]="getCategoryColor(task.categoryId)">
+            {{ getCategoryName(task.categoryId) }}
+          </ion-badge>
+        </p>
+      </ion-label>
+
+      <ion-button slot="end" fill="clear" color="danger" (click)="deleteTask(task)">
+        <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+      </ion-button>
+    </ion-item>
+
+    <ion-item *ngIf="tasks.length === 0">
+      <ion-label class="ion-text-center" color="medium">
+        No hay tareas. ¡Agrega una!
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <!-- FAB para agregar tarea -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="addTask()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>

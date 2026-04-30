@@ -1,0 +1,14 @@
+ion-segment {
+  padding: 8px;
+  background: var(--ion-color-light);
+}
+
+.completed h2 {
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+
+ion-fab {
+  margin-bottom: 16px;
+  margin-right: 8px;
+}
