@@ -8,7 +8,8 @@ export class FeatureFlagService {
   private initialized = false;
 
   constructor() {
-    this.remoteConfig.settings.minimumFetchIntervalMillis = 60000; // 1 min cache
+    const isDev = window.location.hostname === 'localhost';
+    this.remoteConfig.settings.minimumFetchIntervalMillis = isDev ? 10000 : 3600000;
     this.remoteConfig.defaultConfig = {
       show_statistics: false
     };
