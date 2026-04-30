@@ -1,13 +1,13 @@
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, ModalController } from '@ionic/angular';
 import { RouterModule } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
-import { AlertController } from '@ionic/angular';
 import { Task } from '../../models/task';
 import { Category } from '../../models/category';
 import { TaskService } from '../../services/task';
 import { CategoryService } from '../../services/category';
+import { TaskFormPage } from '../task-form/task-form.page';
 
 @Component({
   selector: 'app-task-list',
@@ -24,7 +24,7 @@ export class TaskListPage implements OnInit {
   constructor(
     private taskService: TaskService,
     private categoryService: CategoryService,
-    private alertCtrl: AlertController
+    private modalCtrl: ModalController
   ) {}
 
   ngOnInit() {
@@ -46,27 +46,21 @@ export class TaskListPage implements OnInit {
   }
 
   async addTask() {
-  const alert = await this.alertCtrl.create({
-    header: 'Nueva tarea',
-    inputs: [
-      { name: 'title', type: 'text', placeholder: 'Nombre de la tarea' }
-    ],
-    buttons: [
-      { text: 'Cancelar', role: 'cancel' },
-      {
-        text: 'Agregar',
-        handler: (data) => {
-          if (data.title?.trim()) {
-            this.taskService.addTask(data.title.trim(), this.selectedCategoryId);
-            this.loadData();
-          }
-        }
+    const modal = await this.modalCtrl.create({
+      component: TaskFormPage,
+      componentProps: {
+        initialCategoryId: this.selectedCategoryId
       }
-    ]
+    });
+
+    await modal.present();
+
+    const { data, role } = await modal.onWillDismiss();
+    if (role === 'confirm' && data) {
+      this.taskService.addTask(data.title, data.categoryId);
+      this.loadData();
+    }
   }
-);
-  await alert.present();
-}
 
   toggleComplete(task: Task) {
     this.taskService.completeTask(task.id);
