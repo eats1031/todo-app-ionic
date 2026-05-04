@@ -46,6 +46,8 @@ Aplicación móvil de gestión de tareas con categorías, construida con **Ionic
 ---
 
 ## 📂 Estructura del proyecto
+
+```text
 src/app/
 ├── models/                    # Interfaces del dominio
 │   ├── task.ts
@@ -61,6 +63,7 @@ src/app/
 ├── components/
 │   └── task-item/
 └── firebase.config.ts         # Configuración Firebase
+```
 
 La separación en capas permite reemplazar cualquier capa (ej. cambiar `localStorage` por una API REST) sin tocar las demás. Los servicios no dependen de los componentes; los componentes consumen los servicios mediante inyección de dependencias.
 
