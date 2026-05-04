@@ -160,6 +160,25 @@ Aseguré la calidad mediante **cuatro prácticas**:
 
 ---
 
+## 📸 Capturas de la aplicación
+
+### Pantalla principal con estadísticas (feature flag activo)
+![Lista de tareas](./docs/screenshots/01-task-list.png)
+
+### Modal de creación de tarea con selector de categorías
+![Modal nueva tarea](./docs/screenshots/02-task-form-modal.png)
+
+### Filtrado por categoría
+![Filtro por categoría](./docs/screenshots/03-filter-by-category.png)
+
+### Gestión de categorías
+![Categorías](./docs/screenshots/04-category-manager.png)
+
+### Firebase Remote Config (feature flag)
+![Firebase Remote Config](./docs/screenshots/05-firebase-remote-config.png)
+
+---
+
 ## ⚠️ Limitaciones conocidas
 
 - **IPA no generado:** la generación de archivos IPA requiere un entorno macOS con Xcode, no disponible en el equipo de desarrollo (Windows). El proyecto está configurado para iOS y se compilaría correctamente en un entorno macOS ejecutando `npx cap add ios && npx cap open ios`.
